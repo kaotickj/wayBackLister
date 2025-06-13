@@ -120,6 +120,7 @@ Sometimes, old URLs archived by the Wayback Machine lead to interesting placesâ€
 ## Community Blogs/ Resources
 - ([How I Use Waybacklister to Discover Gold in Bug Bounty Targets ðŸ’°](https://www.youtube.com/watch?v=N_uROnZ0q58&ab_channel=PCPLALEX))
 - ([WayBackLister : Innovative Directory Bruteforcing Technique](https://systemweakness.com/waybacklister-innovative-directory-bruteforcing-technique-43535da40bc4))
+- ([Recon Tool: WaybackLister](https://www.blackhatethicalhacking.com/tools/waybacklister/))
 
 ---
 

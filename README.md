@@ -1,21 +1,19 @@
 
 ---
 
-# WaybackLister v1.0
+# WaybackLister v2.1.2
 
 ```
- __          __         _                _    _      _     _            
- \ \        / /        | |              | |  | |    (_)   | |           
-  \ \  /\  / /_ _ _   _| |__   __ _  ___| | _| |     _ ___| |_ ___ _ __ 
-   \ \/  \/ / _` | | | | '_ \ / _` |/ __| |/ / |    | / __| __/ _ \ '__|
-    \  /\  / (_| | |_| | |_) | (_| | (__|   <| |____| \__ \ ||  __/ |   
-     \/  \/ \__,_|\__, |_.__/ \__,_|\___|_|\_\______|_|___/\__\___|_|   
-                   __/ |                                                
-                  |___/                                                
+		    ▌ ▌      ▌        ▌  ▌  ▗    ▐        
+		    ▌▖▌▝▀▖▌ ▌▛▀▖▝▀▖▞▀▖▌▗▘▌  ▄ ▞▀▘▜▀ ▞▀▖▙▀▖
+   		    ▙▚▌▞▀▌▚▄▌▌ ▌▞▀▌▌ ▖▛▚ ▌  ▐ ▝▀▖▐ ▖▛▀ ▌  
+		    ▘ ▘▝▀▘▗▄▘▀▀ ▝▀▘▝▀ ▘ ▘▀▀▘▀▘▀▀  ▀ ▝▀▘▘   
+                                              
 ```
 
-> **WaybackLister v1.0** — by [FR13ND0x7F]  
-> Discover potential directory listings through archived URLs from the Wayback Machine.
+> **WaybackLister v2.1.2** — by [FR13ND0x7F]
+> Modified and Improved by Kaotick Jay ([kaotickj])  
+> Enhanced Directory Listing Detection Using Wayback Machine.
 
 ---
 

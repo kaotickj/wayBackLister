@@ -33,7 +33,7 @@ def fetch_wayback_urls(domain, retries=3, backoff=5, timeout=(5, 30)):
         f"https://web.archive.org/cdx/search/cdx?url=*.{domain}/*"
         f"&output=txt&fl=original&collapse=urlkey"
     )
-    headers = {'User-Agent': 'WaybackLister/2.0'}
+    headers = {'User-Agent': 'WaybackLister/2.1.2'}
 
     for attempt in range(1, retries + 1):
         try:

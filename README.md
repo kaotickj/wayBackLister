@@ -12,7 +12,7 @@
 ```
 
 > **WaybackLister v2.1.2** — by [FR13ND0x7F]
-> Modified and Improved by Kaotick Jay ([kaotickj])  
+> Modified and Improved by Kaotick Jay ([kaotickj](https://github.com/kaotickj/))  
 > Enhanced Directory Listing Detection Using Wayback Machine.
 
 ---

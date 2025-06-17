@@ -5,39 +5,63 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import argparse
 import os
 import tempfile
+import time
+import random
+
+# ANSI color codes for console output clarity
+RED = "\033[31m"
+YELLOW = "\033[33m"
+GREEN = "\033[32m"
+RESET = "\033[0m"
 
 def display_banner():
     banner = r"""
- __          __         _                _    _      _     _            
- \ \        / /        | |              | |  | |    (_)   | |           
-  \ \  /\  / /_ _ _   _| |__   __ _  ___| | _| |     _ ___| |_ ___ _ __ 
-   \ \/  \/ / _` | | | | '_ \ / _` |/ __| |/ / |    | / __| __/ _ \ '__|
-    \  /\  / (_| | |_| | |_) | (_| | (__|   <| |____| \__ \ ||  __/ |   
-     \/  \/ \__,_|\__, |_.__/ \__,_|\___|_|\_\______|_|___/\__\___|_|   
-                   __/ |                                                
-                  |___/                                                    
-                                             
-                   WaybackLister v1.1 by FR13ND0x7F
+		    ▌ ▌      ▌        ▌  ▌  ▗    ▐        
+		    ▌▖▌▝▀▖▌ ▌▛▀▖▝▀▖▞▀▖▌▗▘▌  ▄ ▞▀▘▜▀ ▞▀▖▙▀▖
+   		    ▙▚▌▞▀▌▚▄▌▌ ▌▞▀▌▌ ▖▛▚ ▌  ▐ ▝▀▖▐ ▖▛▀ ▌  
+		    ▘ ▘▝▀▘▗▄▘▀▀ ▝▀▘▝▀ ▘ ▘▀▀▘▀▘▀▀  ▀ ▝▀▘▘   
+                                                                                                            
+                     WaybackLister v2.1.2 by FR13ND0x7F
+                    Modified and Improved by Kaotick Jay 
            Enhanced Directory Listing Detection Using Wayback Machine
     """
     print(banner)
 
-def fetch_wayback_urls(domain):
-    print(f"[+] Querying Wayback Machine for {domain}...")
-    wayback_url = f"https://web.archive.org/cdx/search/cdx?url=*.{domain}/*&output=txt&fl=original&collapse=urlkey&page=/"
-    headers = {'User-Agent': 'WaybackLister/1.1'}
-    
-    try:
-        with requests.get(wayback_url, stream=True, headers=headers, timeout=10) as response:
-            response.raise_for_status()
-            with tempfile.NamedTemporaryFile(delete=False, mode="w+", encoding="utf-8") as temp_file:
-                for line in response.iter_lines(decode_unicode=True):
-                    if line.strip():
-                        temp_file.write(line.strip() + "\n")
-                return temp_file.name
-    except requests.exceptions.RequestException as e:
-        print(f"[-] Error fetching data from Wayback Machine for {domain}: {e}")
-        return None
+def fetch_wayback_urls(domain, retries=3, backoff=5, timeout=(5, 30)):
+    print(f"{YELLOW}[+] Querying Wayback Machine for {domain}...{RESET}")
+    wayback_url = (
+        f"https://web.archive.org/cdx/search/cdx?url=*.{domain}/*"
+        f"&output=txt&fl=original&collapse=urlkey"
+    )
+    headers = {'User-Agent': 'WaybackLister/2.0'}
+
+    for attempt in range(1, retries + 1):
+        try:
+            with requests.get(wayback_url, stream=True, headers=headers, timeout=timeout) as response:
+                if 500 <= response.status_code < 600:
+                    # Server-side error - trigger retry
+                    raise requests.exceptions.HTTPError(f"Server error: {response.status_code}")
+                response.raise_for_status()
+                with tempfile.NamedTemporaryFile(delete=False, mode="w+", encoding="utf-8") as temp_file:
+                    for line in response.iter_lines(decode_unicode=True):
+                        if line.strip():
+                            temp_file.write(line.strip() + "\n")
+                    return temp_file.name
+
+        except requests.exceptions.Timeout:
+            print(f"{YELLOW}[!] Timeout occurred (Attempt {attempt}/{retries})... retrying in {backoff}s{RESET}")
+        except requests.exceptions.HTTPError as e:
+            print(f"{YELLOW}[!] Server error on attempt {attempt}/{retries}: {e}... retrying in {backoff}s{RESET}")
+        except requests.exceptions.RequestException as e:
+            print(f"{RED}[-] Error fetching data from Wayback Machine for {domain}: {e}{RESET}")
+            break
+
+        # Exponential backoff with jitter before next retry
+        sleep_time = backoff * (2 ** (attempt - 1))
+        jitter = sleep_time * 0.1
+        time.sleep(sleep_time + (jitter * (2 * (random.random() - 0.5)))) 
+
+    return None
 
 def extract_paths_for_domain(temp_file_path, target_domain):
     unique_paths = set()
@@ -109,7 +133,7 @@ def process_domain(domain, paths, threads):
             result = future.result()
             if result:
                 directory_listings.append(result)
-                print(f"[+] Directory Listing Found: {result}")
+                print(f"{GREEN}[+] Directory Listing Found: {result}{RESET}")
     
     if directory_listings:
         print(f"\n[+] Summary of Directory Listings for {domain}:")
@@ -177,7 +201,7 @@ def main():
 
     if args.domain:
         if not re.match(r"^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$", args.domain):
-            print("[-] Invalid domain format. Please enter a valid domain.")
+            print(f"{RED}[-] Invalid domain format. Please enter a valid domain.{RESET}")
             return
         temp_file = fetch_wayback_urls(args.domain)
         if temp_file:
@@ -192,7 +216,7 @@ def main():
     
     elif args.auto:
         if not re.match(r"^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$", args.auto):
-            print("[-] Invalid domain format. Please enter a valid domain.")
+            print(f"{RED}[-] Invalid domain format. Please enter a valid domain.{RESET}")
             return
         auto_discover_and_process(args.auto, args.threads)
 

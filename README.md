@@ -39,7 +39,7 @@ WaybackLister is a reconnaissance tool that taps into the Wayback Machine to fet
 Clone the repo and you're good to go:
 
 ```bash
-git clone https://github.com/anmolksachan/wayBackLister.git
+git clone https://github.com/kaotickj/wayBackLister.git
 cd wayBackLister
 pip install -r requirements.txt -> To be updated
 ```
@@ -91,7 +91,7 @@ http://example.com/uploads/
 
 ## 📄 Example
 
-![image](https://github.com/user-attachments/assets/62bb5035-94fc-432d-ae14-daa823b2aebe)
+![image](example.png)
 
 ---
 

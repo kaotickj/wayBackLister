@@ -69,7 +69,7 @@ python waybacklister.py -auto example.com
 ### Custom Thread Count
 
 ```bash
-python waybacklister.py -d example.com -t 20
+python waybacklister.py -auto scanme.org
 ```
 
 ---
@@ -77,14 +77,21 @@ python waybacklister.py -d example.com -t 20
 ## 📄 Example Output
 
 ```
-[+] Querying Wayback Machine for example.com...
-[+] Found 154 unique paths for example.com. Checking for directory listings...
-[+] Directory Listing Found: http://example.com/files/
-[+] Directory Listing Found: http://example.com/uploads/
+[+] Auto-discovering subdomains for scanme.org...
+[+] Querying Wayback Machine for scanme.org...
+[+] Found 3 targets to process:
+  - scanme.org
+  - nmap.scanme.org
+  - www.scanme.org
+[+] Processing domain: scanme.org
+[+] Found 125 unique paths for scanme.org. Checking for directory listings...
+[-] No directory listings found for scanme.org.
+[+] Processing domain: nmap.scanme.org
+[+] Found 12 unique paths for nmap.scanme.org. Checking for directory listings...
+[-] No directory listings found for nmap.scanme.org.
+[+] Processing domain: www.scanme.org
+[-] No unique paths found for www.scanme.org.
 
-[+] Summary of Directory Listings for example.com:
-http://example.com/files/
-http://example.com/uploads/
 ```
 
 ---
